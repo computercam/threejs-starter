@@ -1,3 +1,5 @@
+import CameraControls from 'camera-controls'
+import GUI from 'lil-gui'
 import * as THREE from 'three'
 
 function getDimensions ({ geometry, scale }) {
@@ -40,7 +42,7 @@ scene.add(group)
 camera.position.x = 1
 camera.position.y = 2
 camera.position.z = 5
-camera.lookAt(box.position)
+camera.lookAt(box.position.x)
 
 box.scale.x = 1.8
 box.scale.y = 1.8
@@ -51,10 +53,37 @@ plane.rotation.x = THREE.MathUtils.degToRad(90)
 plane.scale.x = 1000
 plane.scale.y = 1000
 
+const gui = new GUI()
+const boxData = {
+  position: {
+    x: 0,
+    z: 0
+  },
+  color: 0x00ff00
+}
+
+Object.keys(boxData.position)
+  .forEach(key => gui
+    .add(boxData.position, key, -2, 2, 1)
+    .name(`Box Position ${key}`)
+    .onChange(position =>
+      (box.position[key] = position)))
+
+gui
+  .addColor(boxData, 'color')
+  .name('Box Color')
+  .onChange(color =>
+    box.material.color.setHex(color))
+
 renderer.setSize(width(), height())
 container.appendChild(renderer.domElement)
 
+CameraControls.install({ THREE })
+const cameraControls = new CameraControls(camera, container)
+
 function render () {
+  cameraControls.update(clock.getDelta())
+
   box.rotation.y = clock.getElapsedTime()
 
   window.requestAnimationFrame(() => render())
