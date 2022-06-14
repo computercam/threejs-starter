@@ -10,9 +10,7 @@ function getContainer () {
 }
 
 function configLights ({ scene, camera, lights, gui }) {
-  const guiLightControls = gui
-    ? gui.addFolder('Light Controls')
-    : null
+  const guiLightControls = gui ? gui.addFolder('Light Controls') : null
 
   function createAmbientLight (intesity, color, guiFolder, scene) {
     const params = { color }
@@ -23,8 +21,9 @@ function configLights ({ scene, camera, lights, gui }) {
       const folder = guiFolder.addFolder('Ambient')
       folder.add(light, 'intensity', 0, 5, 0.1)
 
-      folder.addColor(params, 'color').onChange(color =>
-        light.color.set(color))
+      folder
+        .addColor(params, 'color')
+        .onChange((color) => light.color.set(color))
     }
 
     scene.add(light)
@@ -55,7 +54,7 @@ function configLights ({ scene, camera, lights, gui }) {
       const folder = guiFolder.addFolder(`Light ${amt}`)
 
       folder.add(light, 'intensity', 0, 5, 0.1)
-      folder.addColor(params, 'color').onChange(color => {
+      folder.addColor(params, 'color').onChange((color) => {
         light.color.set(color)
         sphere.material.color.set(color)
       })
@@ -86,13 +85,12 @@ function configFog ({ scene, renderer, color, density, gui }) {
   scene.fog = new THREE.FogExp2(color, density)
 
   if (gui) {
-    const guiSceneControls = gui
-      .addFolder('Scene Controls')
+    const guiSceneControls = gui.addFolder('Scene Controls')
 
     guiSceneControls
       .addColor(scene.fog, 'color')
       .name('Fog Color')
-      .onChange(color => {
+      .onChange((color) => {
         scene.fog.color.set(color)
         renderer.setClearColor(color)
       })
@@ -117,8 +115,9 @@ function configGround ({ scene, size, material, gui }) {
   if (gui) {
     const guiMaterialControls = gui.addFolder('Ground Controls')
 
-    guiMaterialControls.addColor(material, 'color')
-      .onChange(color => plane.material.color.set(color))
+    guiMaterialControls
+      .addColor(material, 'color')
+      .onChange((color) => plane.material.color.set(color))
 
     guiMaterialControls.add(plane.material, 'roughness', 0, 1, 0.001)
     guiMaterialControls.add(plane.material, 'metalness', 0, 1, 0.001)
@@ -140,8 +139,7 @@ function configCamera ({ camera, scene, position, rotation, gui }) {
   camera.rotation.z = rotation.z
 
   if (gui) {
-    const guiCameraControls = gui
-      .addFolder('Camera Controls')
+    const guiCameraControls = gui.addFolder('Camera Controls')
 
     guiCameraControls
       .add(camera.position, 'x', -100, 100, 0.001)
@@ -187,9 +185,9 @@ function configTorus ({ scene, material, gui }) {
   if (gui) {
     const guiMaterialControls = gui.addFolder('Object Controls')
 
-    guiMaterialControls.addColor(material, 'color')
-      .onChange(() =>
-        torus.material.color.set(material.color))
+    guiMaterialControls
+      .addColor(material, 'color')
+      .onChange(() => torus.material.color.set(material.color))
 
     guiMaterialControls.add(torus.material, 'roughness', 0, 1, 0.001)
     guiMaterialControls.add(torus.material, 'metalness', 0, 1, 0.001)
@@ -255,10 +253,7 @@ function configScene ({ gui, scene, camera, renderer }) {
   })
 }
 
-function init ({
-  container: { el, width, height },
-  configScene
-}) {
+function init ({ container: { el, width, height }, configScene }) {
   const gui = new GUI()
   const scene = new THREE.Scene()
   const cameraSettings = [55, width() / height(), 0.1, 1000]
@@ -294,8 +289,7 @@ function render ({ scene, camera, renderer }) {
   torus.rotation.x += 0.005
   torus.rotation.y += 0.005
 
-  window.requestAnimationFrame(() =>
-    render({ scene, camera, renderer }))
+  window.requestAnimationFrame(() => render({ scene, camera, renderer }))
 }
 
 const container = getContainer()
