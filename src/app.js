@@ -1,4 +1,3 @@
-
 import * as THREE from 'three'
 
 function getDimensions ({ geometry, scale }) {
@@ -16,6 +15,7 @@ const width = () => container.getBoundingClientRect().width
 const scene = new THREE.Scene()
 const camera = new THREE.PerspectiveCamera(55, width() / height(), 0.1, 1000)
 const renderer = new THREE.WebGLRenderer()
+const clock = new THREE.Clock()
 
 const box = new THREE.Mesh(
   new THREE.BoxGeometry(1, 1, 1),
@@ -35,12 +35,7 @@ const plane = new THREE.Mesh(
 const group = new THREE.Group()
 group.add(box)
 group.add(plane)
-
 scene.add(group)
-
-group.position.y = -5
-group.position.z = -5
-group.rotation.z = THREE.MathUtils.degToRad(22.5)
 
 camera.position.x = 1
 camera.position.y = 2
@@ -59,4 +54,11 @@ plane.scale.y = 1000
 renderer.setSize(width(), height())
 container.appendChild(renderer.domElement)
 
-renderer.render(scene, camera)
+function render () {
+  box.rotation.y = clock.getElapsedTime()
+
+  window.requestAnimationFrame(() => render())
+  renderer.render(scene, camera)
+}
+
+render()
