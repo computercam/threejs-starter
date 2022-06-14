@@ -62,3 +62,13 @@ function render () {
 }
 
 render()
+
+window.addEventListener('resize', () => {
+  clearTimeout(window.___timeout)
+
+  window.___timeout = setTimeout(() => {
+    renderer.setSize(width(), height())
+    camera.aspect = width() / height()
+    camera.updateProjectionMatrix()
+  }, 100)
+})
