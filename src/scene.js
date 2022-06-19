@@ -7,7 +7,12 @@ export const width = () => container.getBoundingClientRect().width
 
 export const scene = new THREE.Scene()
 export const clock = new THREE.Clock()
-export const camera = new THREE.PerspectiveCamera(55, width() / height(), 0.1, 1000)
+export const camera = new THREE.PerspectiveCamera(
+  55,
+  width() / height(),
+  0.1,
+  1000
+)
 export const renderer = new THREE.WebGLRenderer()
 
 camera.position.x = 15

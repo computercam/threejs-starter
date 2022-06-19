@@ -1,10 +1,6 @@
 import * as THREE from 'three'
 
-export function getMeshGrid ({
-  grid,
-  geometry,
-  material
-}) {
+export function getMeshGrid ({ grid, geometry, material }) {
   return grid.reduce((pre, cur, i, arr) => {
     const mesh = new THREE.Mesh(geometry, material)
     mesh.scale.x = 1
