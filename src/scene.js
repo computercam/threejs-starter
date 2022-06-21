@@ -1,5 +1,6 @@
 import CameraControls from 'camera-controls'
 import * as THREE from 'three'
+import { RectAreaLightUniformsLib } from 'three/examples/jsm/lights/RectAreaLightUniformsLib'
 
 export const container = document.querySelector('main')
 export const height = () => container.getBoundingClientRect().height
@@ -13,14 +14,15 @@ export const camera = new THREE.PerspectiveCamera(
   0.1,
   1000
 )
-export const renderer = new THREE.WebGLRenderer()
+export const renderer = new THREE.WebGLRenderer({ antialias: true })
+renderer.setPixelRatio(window.devicePixelRatio)
+renderer.outputEncoding = THREE.sRGBEncoding
 
-camera.position.x = 15
-camera.position.y = 3
-camera.position.z = 0
+camera.position.set(7.5, 5, -20)
 
 renderer.setSize(width(), height())
 container.appendChild(renderer.domElement)
+RectAreaLightUniformsLib.init()
 
 CameraControls.install({ THREE })
 const cameraControls = new CameraControls(camera, container)
