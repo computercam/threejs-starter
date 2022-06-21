@@ -1,5 +1,12 @@
 import * as THREE from 'three'
-import { getDimensions, getGrid, getLight, getMeshGrid, hslRotate } from './helpers'
+
+import {
+  getDimensions,
+  getGrid,
+  getLight,
+  getMeshGrid,
+  hslRotate
+} from './helpers'
 import { render, renderer, scene } from './scene'
 
 renderer.setClearColor('rgb(0, 0, 0)')
@@ -55,13 +62,17 @@ const { rectLight: rectLight3, spotLight: spotLight3 } = getLight({
   color: 'rgb(255,0,255)'
 })
 
-const hemLight = new THREE.HemisphereLight('rgb(255,0,255)', 'rgb(0,255,255)', 0)
+const hemLight = new THREE.HemisphereLight(
+  'rgb(255,0,255)',
+  'rgb(0,255,255)',
+  0
+)
 scene.add(hemLight)
 
 renderer.shadowMap.enabled = true
 renderer.shadowMap.type = THREE.PCFSoftShadowMap
 plane.receiveShadow = true
-boxGrid.children.forEach(box => {
+boxGrid.children.forEach((box) => {
   box.castShadow = true
   box.receiveShadow = true
 })
@@ -69,17 +80,22 @@ boxGrid.children.forEach(box => {
 render((time) => {
   grid.forEach(({ i, r, x, y }, index) => {
     const box = boxGrid.children[index]
-    const wave = (Math.sin(
-      time * // elapsed time
-      0.75 + // frequency
-      ((x * 0.1) * (y * 0.75)) * // multiplier based on position in the grid
-      0.5 // wavelength
-    ) * 1) + 1 // amplitude
+    const wave =
+      Math.sin(
+        time * // elapsed time
+          0.75 + // frequency
+          x *
+            0.1 *
+            (y * 0.75) * // multiplier based on position in the grid
+            0.5 // wavelength
+      ) *
+        1 +
+      1 // amplitude
 
-    box.scale.x = (wave * 0.25) + 0.15
-    box.scale.y = (wave * 0.25) + 0.15
-    box.scale.z = (wave * 0.25) + 0.15
-    box.position.y = wave + (getDimensions(box).y * 0.5)
+    box.scale.x = wave * 0.25 + 0.15
+    box.scale.y = wave * 0.25 + 0.15
+    box.scale.z = wave * 0.25 + 0.15
+    box.position.y = wave + getDimensions(box).y * 0.5
     box.rotation.x = wave
     box.rotation.y = wave * 0.25
   })

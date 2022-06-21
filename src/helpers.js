@@ -41,11 +41,7 @@ export function getDimensions ({ geometry, scale }) {
   }
 }
 
-export function getLight ({
-  scene,
-  position: [x, y, z],
-  color
-}) {
+export function getLight ({ scene, position: [x, y, z], color }) {
   const spotLightAngle = THREE.MathUtils.degToRad(11.25)
   const spotLightArgs = [color, 1, 0, spotLightAngle, 0.5]
   const spotLight = new THREE.SpotLight(...spotLightArgs)
@@ -79,5 +75,5 @@ export function getLight ({
 
 export function hslRotate ({ obj, colorProp = 'color', amount = 0.001 }) {
   const { h, s, l } = obj[colorProp].getHSL(obj[colorProp])
-  obj[colorProp].setHSL((h + amount % 1), s, l)
+  obj[colorProp].setHSL(h + (amount % 1), s, l)
 }
