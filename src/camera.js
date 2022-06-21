@@ -13,8 +13,8 @@ function getOrthographicCamera ({ scene }) {
 
   const aspect = () => width() / height()
   const frustumSize = () => height() / settings.zoom
-  const left = () => frustumSize() * aspect() / -2
-  const right = () => frustumSize() * aspect() / 2
+  const left = () => (frustumSize() * aspect()) / -2
+  const right = () => (frustumSize() * aspect()) / 2
   const top = () => frustumSize() / 2
   const bottom = () => frustumSize() / -2
   const near = () => -1000
@@ -42,14 +42,14 @@ function getOrthographicCamera ({ scene }) {
 
   const folder = gui.addFolder('Orthographic Camera')
 
-  ;['x', 'y', 'z'].forEach(axis =>
-    folder.add(settings.position, axis, -10, 10, 0.01)
+  ;['x', 'y', 'z'].forEach((axis) =>
+    folder
+      .add(settings.position, axis, -10, 10, 0.01)
       .name(`${axis.toUpperCase()} Position`)
-      .onChange(reset))
+      .onChange(reset)
+  )
 
-  folder.add(settings, 'zoom', 10, 50, 1)
-    .name('Zoom')
-    .onChange(reset)
+  folder.add(settings, 'zoom', 10, 50, 1).name('Zoom').onChange(reset)
 
   window.addEventListener('resize', () => {
     clearTimeout(window.___cameratimeout)
@@ -108,23 +108,28 @@ function getPerspectiveCamera ({ scene }) {
 
   const folder = gui.addFolder('Perspective Camera')
 
-    ;['x', 'y', 'z'].forEach(axis =>
-    folder.add(settings.position, axis, -40, 40, 0.001)
+  ;['x', 'y', 'z'].forEach((axis) =>
+    folder
+      .add(settings.position, axis, -40, 40, 0.001)
       .name(`${axis.toUpperCase()} Position`)
       .onChange(() => {
         reset()
         camera.lookAt(0, 3, 0)
-      }))
+      })
+  )
 
-  folder.add(settings.pitch.rotation, 'x', -Math.PI, Math.PI, 0.0001)
+  folder
+    .add(settings.pitch.rotation, 'x', -Math.PI, Math.PI, 0.0001)
     .name('Pitch')
     .onChange(reset)
 
-  folder.add(settings.yaw.rotation, 'y', -Math.PI, Math.PI, 0.0001)
+  folder
+    .add(settings.yaw.rotation, 'y', -Math.PI, Math.PI, 0.0001)
     .name('Yaw')
     .onChange(reset)
 
-  folder.add(settings.rotation, 'z', -Math.PI, Math.PI, 0.0001)
+  folder
+    .add(settings.rotation, 'z', -Math.PI, Math.PI, 0.0001)
     .name('Roll')
     .onChange(reset)
 

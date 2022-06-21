@@ -5,7 +5,8 @@ import { getCamera } from './camera'
 
 export const gui = new GUI()
 const cameraSettings = { type: 'Perspective' }
-gui.add(cameraSettings, 'type', ['Perspective', 'Orthographic'])
+gui
+  .add(cameraSettings, 'type', ['Perspective', 'Orthographic'])
   .name('Camera Type')
 
 export const container = document.querySelector('main')
