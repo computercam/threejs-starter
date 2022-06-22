@@ -1,5 +1,6 @@
 import * as THREE from 'three'
 import { RectAreaLightHelper } from 'three/examples/jsm/helpers/RectAreaLightHelper.js'
+import { RectAreaLightUniformsLib } from 'three/examples/jsm/lights/RectAreaLightUniformsLib'
 import { getDimensions, getGrid, getMeshGrid } from './helpers'
 import { render, renderer, scene } from './scene'
 
@@ -8,8 +9,10 @@ renderer.setClearColor('rgb(205, 205, 205)')
 const plane = new THREE.Mesh(
   new THREE.PlaneGeometry(6, 6),
   new THREE.MeshStandardMaterial({
-    color: 0x888888,
-    side: THREE.DoubleSide
+    color: 0x909090,
+    side: THREE.DoubleSide,
+    roughness: 0,
+    metalness: 0
   })
 )
 
@@ -23,7 +26,9 @@ const boxGrid = getMeshGrid({
   grid,
   geometry: new THREE.BoxGeometry(1, 1, 1),
   material: new THREE.MeshStandardMaterial({
-    color: 0x808080
+    color: 0xa0a0a0,
+    roughness: 0,
+    metalness: 0
   })
 })
 
@@ -36,9 +41,7 @@ const sphere = new THREE.Mesh(
 )
 light.add(sphere)
 
-light.position.y = 15
-light.position.x = -15
-light.position.z = -5
+light.position.set(-15, 15, -5)
 light.shadow.bias = 0.00001
 light.shadow.mapSize.width = 2048
 light.shadow.mapSize.height = 2048
@@ -55,29 +58,26 @@ const helper = new THREE.CameraHelper(light.shadow.camera)
 scene.add(light)
 scene.add(helper)
 
-const rectLight = new THREE.RectAreaLight('rgb(0,255,255)', 8, 100, 5)
+RectAreaLightUniformsLib.init()
+
+const rectLight = new THREE.RectAreaLight('rgb(0,255,255)', 4, 8, 32)
 const rectLightHelper = new RectAreaLightHelper(rectLight)
-rectLight.position.x = -18
-rectLight.position.y = 12
-rectLight.lookAt(0, 0, 0)
+rectLight.position.set(-12, 16, 0)
+rectLight.lookAt(25, 16, 0)
 rectLight.add(rectLightHelper)
 scene.add(rectLight)
 
-const rectLight2 = new THREE.RectAreaLight('rgb(255,255,0)', 8, 66, 5)
+const rectLight2 = new THREE.RectAreaLight('rgb(255,255,0)', 4, 8, 32)
 const rectLightHelper2 = new RectAreaLightHelper(rectLight2)
-rectLight2.position.x = 12
-rectLight2.position.z = 12
-rectLight2.position.y = 12
-rectLight2.lookAt(0, 0, 0)
+rectLight2.position.set(-12, 16, -12)
+rectLight2.lookAt(25, 16, 0)
 rectLight2.add(rectLightHelper2)
 scene.add(rectLight2)
 
-const rectLight3 = new THREE.RectAreaLight('rgb(255,0,255)', 8, 66, 5)
+const rectLight3 = new THREE.RectAreaLight('rgb(255,0,255)', 4, 8, 32)
 const rectLightHelper3 = new RectAreaLightHelper(rectLight3)
-rectLight3.position.x = 12
-rectLight3.position.z = -12
-rectLight3.position.y = 12
-rectLight3.lookAt(0, 0, 0)
+rectLight3.position.set(-12, 16, 12)
+rectLight3.lookAt(25, 16, 0)
 rectLight3.add(rectLightHelper3)
 scene.add(rectLight3)
 
@@ -103,7 +103,7 @@ render((time) => {
     box.scale.y = Math.cos(factor) + r * 0.1 + 1
     box.position.y = getDimensions(box).y * 0.5
 
-    const lightOffset = Math.sin(time * 2) + 5
+    const lightOffset = Math.sin(time * 2) + 3
     rectLight.intensity = lightOffset
     rectLight2.intensity = lightOffset
     rectLight3.intensity = lightOffset
