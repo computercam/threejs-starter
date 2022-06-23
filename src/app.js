@@ -13,6 +13,23 @@ import {
 const container = getContainer()
 const environment3D = getEnvironment3D({ container })
 
+configCamera({
+  ...environment3D,
+  position: {
+    x: 0,
+    y: 6,
+    z: 25
+  },
+  rotation: {
+    x: -0.25,
+    y: 3.14,
+    z: 0
+  },
+  guiOnChangeCallback ({ camera }) {
+    camera.lookAt(torus.position)
+  }
+})
+
 configFog({
   ...environment3D,
   color: 0x000000,
@@ -31,38 +48,21 @@ configLights({
 configGround({
   ...environment3D,
   size: 1000,
-  material: {
+  material: new THREE.MeshStandardMaterial({
     color: 'rgb(70, 70, 70)',
     side: THREE.DoubleSide,
     roughness: 0.75,
     metalness: 0.25
-  }
+  })
 })
 
 const torus = configTorus({
   ...environment3D,
-  material: {
+  material: new THREE.MeshStandardMaterial({
     color: 0xafafaf,
     roughness: 0.5,
     metalness: 0.75
-  }
-})
-
-configCamera({
-  ...environment3D,
-  position: {
-    x: 0,
-    y: 6,
-    z: 25
-  },
-  rotation: {
-    x: -0.25,
-    y: 3.14,
-    z: 0
-  },
-  guiOnChangeCallback ({ camera }) {
-    camera.lookAt(torus.position)
-  }
+  })
 })
 
 environment3D.render((time) => {

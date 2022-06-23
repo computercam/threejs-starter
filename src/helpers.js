@@ -141,7 +141,7 @@ export function configFog ({ scene, renderer, color, density, gui }) {
 export function configGround ({ scene, size, material, gui }) {
   const plane = new THREE.Mesh(
     new THREE.PlaneGeometry(size, size),
-    new THREE.MeshStandardMaterial(material)
+    material
   )
 
   plane.name = 'plane'
@@ -252,11 +252,7 @@ export function configCamera ({
 export function configTorus ({ scene, material, gui }) {
   const torus = new THREE.Mesh(
     new THREE.TorusKnotGeometry(3.5, 1, 100, 16),
-    new THREE.MeshStandardMaterial({
-      color: material.color,
-      roughness: material.roughness,
-      metalness: material.metalness
-    })
+    material
   )
 
   torus.castShadow = true
