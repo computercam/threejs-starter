@@ -139,10 +139,7 @@ export function configFog ({ scene, renderer, color, density, gui }) {
 }
 
 export function configGround ({ scene, size, material, gui }) {
-  const plane = new THREE.Mesh(
-    new THREE.PlaneGeometry(size, size),
-    material
-  )
+  const plane = new THREE.Mesh(new THREE.PlaneGeometry(size, size), material)
 
   plane.name = 'plane'
   plane.receiveShadow = true
