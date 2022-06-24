@@ -2,12 +2,10 @@ import * as THREE from 'three'
 
 import { getEnvironment3D } from './environment-3d'
 import {
-  configCamera,
+  configBox, configCamera,
   configFog,
   configGround,
-  configLights,
-  configTorus,
-  getContainer
+  configLights, getContainer
 } from './helpers'
 
 const container = getContainer()
@@ -26,7 +24,7 @@ configCamera({
     z: 0
   },
   guiOnChangeCallback ({ camera }) {
-    camera.lookAt(torus.position)
+    camera.lookAt(box.position)
   }
 })
 
@@ -59,7 +57,7 @@ configGround({
   })
 })
 
-const torus = configTorus({
+const box = configBox({
   ...environment3D,
   material: new THREE.MeshStandardMaterial({
     color: 0xafafaf,
@@ -73,7 +71,7 @@ const torus = configTorus({
 })
 
 environment3D.render((time) => {
-  torus.rotation.x = time * 0.2
-  torus.rotation.y = time * 0.2
-  torus.position.y = Math.sin(time) + 8
+  box.rotation.x = time * 0.2
+  box.rotation.y = time * 0.2
+  box.position.y = Math.sin(time) + 8
 })

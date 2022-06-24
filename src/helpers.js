@@ -233,31 +233,31 @@ export function configCamera ({
   return camera
 }
 
-export function configTorus ({ scene, material, gui }) {
-  const torus = new THREE.Mesh(
-    new THREE.TorusKnotGeometry(3.5, 1, 100, 16),
+export function configBox ({ scene, material, gui }) {
+  const box = new THREE.Mesh(
+    new THREE.BoxGeometry(7, 7, 7),
     material
   )
 
-  torus.castShadow = true
-  torus.name = 'torus'
-  torus.position.y += torus.geometry.parameters.radius * 2
-  scene.add(torus)
+  box.castShadow = true
+  box.name = 'box'
+  box.position.y += box.geometry.parameters.radius * 2
+  scene.add(box)
 
   if (gui) {
     const guiMaterialControls = gui.addFolder('Object Controls')
 
     configGUIMaterialControls({
-      mesh: torus,
+      mesh: box,
       gui: guiMaterialControls
     })
 
-    guiMaterialControls.add(torus.material, 'roughness', 0, 1, 0.001)
-    guiMaterialControls.add(torus.material, 'metalness', 0, 1, 0.001)
+    guiMaterialControls.add(box.material, 'roughness', 0, 1, 0.001)
+    guiMaterialControls.add(box.material, 'metalness', 0, 1, 0.001)
     guiMaterialControls.close()
   }
 
-  return torus
+  return box
 }
 
 export function configGround ({ scene, size, material, gui }) {
