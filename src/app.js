@@ -50,6 +50,9 @@ configGround({
   size: 1000,
   material: new THREE.MeshStandardMaterial({
     color: 'rgb(70, 70, 70)',
+    wireframe: false,
+    transparent: true,
+    opacity: 1,
     side: THREE.DoubleSide,
     roughness: 0.75,
     metalness: 0.25
@@ -59,7 +62,11 @@ configGround({
 const torus = configTorus({
   ...environment3D,
   material: new THREE.MeshBasicMaterial({
-    color: 0xafafaf
+    color: 0xafafaf,
+    wireframe: false,
+    transparent: true,
+    opacity: 1,
+    side: THREE.FrontSide
   })
 })
 
