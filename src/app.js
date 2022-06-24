@@ -58,8 +58,10 @@ configGround({
 
 const torus = configTorus({
   ...environment3D,
-  material: new THREE.MeshBasicMaterial({
-    color: 0xafafaf
+  material: new THREE.MeshStandardMaterial({
+    color: 0xafafaf,
+    roughness: 0.5,
+    metalness: 0.75
   })
 })
 
