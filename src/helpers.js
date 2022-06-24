@@ -7,6 +7,18 @@ export function getContainer () {
   return { el, height, width }
 }
 
+export function configGUIMaterialControls ({ mesh, gui }) {
+  gui.addColor(mesh.material, 'color')
+  gui.add(mesh.material, 'wireframe')
+  gui.add(mesh.material, 'transparent')
+  gui.add(mesh.material, 'opacity', 0, 1, 0.01)
+  gui.add(mesh.material, 'side', {
+    FrontSide: THREE.FrontSide,
+    BackSide: THREE.BackSide,
+    DoubleSide: THREE.DoubleSide
+  })
+}
+
 export function createAmbientLight ({
   intensity = 0,
   color1 = 0xffffff,
@@ -28,8 +40,6 @@ export function createAmbientLight ({
   if (guiFolder) {
     const folder = guiFolder.addFolder('Hemisphere')
     folder.add(light, 'intensity', 0, 5, 0.1)
-
-    console.log(light)
 
     folder
       .addColor(params, 'colorSky')
@@ -138,29 +148,6 @@ export function configFog ({ scene, renderer, color, density, gui }) {
   return scene.fog
 }
 
-export function configGround ({ scene, size, material, gui }) {
-  const plane = new THREE.Mesh(new THREE.PlaneGeometry(size, size), material)
-
-  plane.name = 'plane'
-  plane.receiveShadow = true
-  plane.rotation.x += THREE.MathUtils.degToRad(-90)
-  scene.add(plane)
-
-  if (gui) {
-    const guiMaterialControls = gui.addFolder('Ground Controls')
-
-    guiMaterialControls
-      .addColor(material, 'color')
-      .onChange((color) => plane.material.color.set(color))
-
-    guiMaterialControls.add(plane.material, 'roughness', 0, 1, 0.001)
-    guiMaterialControls.add(plane.material, 'metalness', 0, 1, 0.001)
-    guiMaterialControls.close()
-  }
-
-  return plane
-}
-
 export function configCamera ({
   camera,
   scene,
@@ -260,9 +247,10 @@ export function configTorus ({ scene, material, gui }) {
   if (gui) {
     const guiMaterialControls = gui.addFolder('Object Controls')
 
-    guiMaterialControls
-      .addColor(material, 'color')
-      .onChange(() => torus.material.color.set(material.color))
+    configGUIMaterialControls({
+      mesh: torus,
+      gui: guiMaterialControls
+    })
 
     guiMaterialControls.add(torus.material, 'roughness', 0, 1, 0.001)
     guiMaterialControls.add(torus.material, 'metalness', 0, 1, 0.001)
@@ -270,4 +258,28 @@ export function configTorus ({ scene, material, gui }) {
   }
 
   return torus
+}
+
+export function configGround ({ scene, size, material, gui }) {
+  const plane = new THREE.Mesh(new THREE.PlaneGeometry(size, size), material)
+
+  plane.name = 'plane'
+  plane.receiveShadow = true
+  plane.rotation.x += THREE.MathUtils.degToRad(-90)
+  scene.add(plane)
+
+  if (gui) {
+    const guiMaterialControls = gui.addFolder('Ground Controls')
+
+    configGUIMaterialControls({
+      mesh: plane,
+      gui: guiMaterialControls
+    })
+
+    guiMaterialControls.add(plane.material, 'roughness', 0, 1, 0.001)
+    guiMaterialControls.add(plane.material, 'metalness', 0, 1, 0.001)
+    guiMaterialControls.close()
+  }
+
+  return plane
 }
