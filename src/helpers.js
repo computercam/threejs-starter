@@ -234,10 +234,7 @@ export function configCamera ({
 }
 
 export function configBox ({ scene, material, gui }) {
-  const box = new THREE.Mesh(
-    new THREE.BoxGeometry(7, 7, 7),
-    material
-  )
+  const box = new THREE.Mesh(new THREE.BoxGeometry(7, 7, 7), material)
 
   box.castShadow = true
   box.name = 'box'

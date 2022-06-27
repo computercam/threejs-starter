@@ -2,10 +2,12 @@ import * as THREE from 'three'
 
 import { getEnvironment3D } from './environment-3d'
 import {
-  configBox, configCamera,
+  configBox,
+  configCamera,
   configFog,
   configGround,
-  configLights, getContainer
+  configLights,
+  getContainer
 } from './helpers'
 
 const textureLoader = new THREE.TextureLoader()
@@ -39,9 +41,9 @@ configFog({
 configLights({
   ...environment3D,
   lights: [
-    { x: 100, y: 100, z: 100, intensity: 1.5, color: 0xffffff },
-    { x: -100, y: 100, z: 100, intensity: 1, color: 0xffffff },
-    { x: 0, y: 100, z: -100, intensity: 0.5, color: 0xffffff }
+    { x: 100, y: 100, z: 100, intensity: 2, color: 0xffffff },
+    { x: -100, y: 100, z: 100, intensity: 2, color: 0xffffff },
+    { x: 0, y: 100, z: -100, intensity: 2, color: 0xffffff }
   ]
 })
 
@@ -68,8 +70,7 @@ const box = configBox({
     transparent: true,
     opacity: 1,
     side: THREE.FrontSide,
-    roughness: 0.5,
-    metalness: 0.75
+    map: textureLoader.load('textures/metal/metal_diffuse.jpg')
   })
 })
 
