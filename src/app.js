@@ -8,6 +8,8 @@ import {
   configLights, getContainer
 } from './helpers'
 
+const textureLoader = new THREE.TextureLoader()
+
 const container = getContainer()
 const environment3D = getEnvironment3D({ container })
 
@@ -43,7 +45,7 @@ configLights({
   ]
 })
 
-configGround({
+const ground = configGround({
   ...environment3D,
   size: 1000,
   material: new THREE.MeshStandardMaterial({
@@ -52,10 +54,11 @@ configGround({
     transparent: true,
     opacity: 1,
     side: THREE.DoubleSide,
-    roughness: 0.75,
-    metalness: 0.25
+    map: textureLoader.load('textures/ground/ground_diffuse.jpg')
   })
 })
+
+console.log(ground)
 
 const box = configBox({
   ...environment3D,
