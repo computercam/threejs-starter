@@ -2,15 +2,15 @@ import * as THREE from 'three'
 
 import { getEnvironment3D } from './environment-3d'
 import {
-  configBox,
   configCamera,
   configFog,
   configGround,
   configLights,
+  configSphere,
   getContainer
 } from './helpers'
 
-const textureLoader = new THREE.TextureLoader()
+// const textureLoader = new THREE.TextureLoader()
 
 const container = getContainer()
 const environment3D = getEnvironment3D({ container })
@@ -28,7 +28,7 @@ configCamera({
     z: 0
   },
   guiOnChangeCallback ({ camera }) {
-    camera.lookAt(box.position)
+    camera.lookAt(sphere.position)
   }
 })
 
@@ -47,35 +47,31 @@ configLights({
   ]
 })
 
-const ground = configGround({
+configGround({
   ...environment3D,
   size: 1000,
   material: new THREE.MeshStandardMaterial({
     color: 'rgb(70, 70, 70)',
     wireframe: false,
-    transparent: true,
+    transparent: false,
     opacity: 1,
-    side: THREE.DoubleSide,
-    map: textureLoader.load('textures/ground/ground_diffuse.jpg')
+    side: THREE.DoubleSide
   })
 })
 
-console.log(ground)
-
-const box = configBox({
+const sphere = configSphere({
   ...environment3D,
   material: new THREE.MeshStandardMaterial({
     color: 0xafafaf,
     wireframe: false,
-    transparent: true,
+    transparent: false,
     opacity: 1,
-    side: THREE.FrontSide,
-    map: textureLoader.load('textures/metal/metal_diffuse.jpg')
+    side: THREE.FrontSide
   })
 })
 
 environment3D.render((time) => {
-  box.rotation.x = time * 0.2
-  box.rotation.y = time * 0.2
-  box.position.y = Math.sin(time) + 8
+  sphere.rotation.x = time * 0.2
+  sphere.rotation.y = time * 0.2
+  sphere.position.y = Math.sin(time) + 8
 })

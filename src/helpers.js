@@ -233,28 +233,28 @@ export function configCamera ({
   return camera
 }
 
-export function configBox ({ scene, material, gui }) {
-  const box = new THREE.Mesh(new THREE.BoxGeometry(7, 7, 7), material)
+export function configSphere ({ scene, material, gui }) {
+  const sphere = new THREE.Mesh(new THREE.SphereGeometry(6, 36, 36), material)
 
-  box.castShadow = true
-  box.name = 'box'
-  box.position.y += box.geometry.parameters.radius * 2
-  scene.add(box)
+  sphere.castShadow = true
+  sphere.name = 'sphere'
+  sphere.position.y += sphere.geometry.parameters.radius * 2
+  scene.add(sphere)
 
   if (gui) {
     const guiMaterialControls = gui.addFolder('Object Controls')
 
     configGUIMaterialControls({
-      mesh: box,
+      mesh: sphere,
       gui: guiMaterialControls
     })
 
-    guiMaterialControls.add(box.material, 'roughness', 0, 1, 0.001)
-    guiMaterialControls.add(box.material, 'metalness', 0, 1, 0.001)
+    guiMaterialControls.add(sphere.material, 'roughness', 0, 1, 0.001)
+    guiMaterialControls.add(sphere.material, 'metalness', 0, 1, 0.001)
     guiMaterialControls.close()
   }
 
-  return box
+  return sphere
 }
 
 export function configGround ({ scene, size, material, gui }) {
