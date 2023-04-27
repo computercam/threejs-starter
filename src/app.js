@@ -7,10 +7,11 @@ import {
   configGround,
   configLights,
   configSphere,
+  configTexture,
   getContainer
 } from './helpers'
 
-// const textureLoader = new THREE.TextureLoader()
+const textureLoader = new THREE.TextureLoader()
 
 const container = getContainer()
 const environment3D = getEnvironment3D({ container })
@@ -27,7 +28,7 @@ configCamera({
     y: 3.14,
     z: 0
   },
-  guiOnChangeCallback ({ camera }) {
+  guiOnChangeCallback({ camera }) {
     camera.lookAt(sphere.position)
   }
 })
@@ -47,27 +48,54 @@ configLights({
   ]
 })
 
+const groundTexture = configTexture({
+	map: textureLoader.load('textures/checker/checker_diffuse.jpg'),
+})
+  .map(texture => (texture.wrapS = THREE.RepeatWrapping))
+  .map(texture => (texture.wrapT = THREE.RepeatWrapping))
+  .map(texture => (texture.repeat.set(50, 50)))
+  .map(texture => (texture.magFilter = THREE.NearestFilter))
+  .getValue()
+
+const groundMaterial = new THREE.MeshStandardMaterial({
+  ...groundTexture,
+  color: 'rgb(70, 70, 70)',
+  wireframe: false,
+  transparent: false,
+  opacity: 1,
+  side: THREE.DoubleSide
+})
+
 configGround({
   ...environment3D,
   size: 1000,
-  material: new THREE.MeshStandardMaterial({
-    color: 'rgb(70, 70, 70)',
-    wireframe: false,
-    transparent: false,
-    opacity: 1,
-    side: THREE.DoubleSide
-  })
+  material: groundMaterial 
+})
+
+const sphereTexture = configTexture({
+  roughnessMap: textureLoader.load('textures/pipes/pipes_roughness.jpg'),
+  map: textureLoader.load('textures/pipes/pipes_diffuse.jpg'),
+  metalnessMap: textureLoader.load('textures/pipes/pipes_metallic.jpg'),
+  normalMap: textureLoader.load('textures/pipes/pipes_normal.jpg'),
+  aoMap: textureLoader.load('textures/pipes/pipes_ambientOcclusion.jpg')
+})
+  .map(texture => (texture.wrapS = THREE.RepeatWrapping))
+  .map(texture => (texture.wrapT = THREE.RepeatWrapping))
+  .map(texture => texture.repeat.set(8, 4))
+  .getValue()
+
+const sphereMaterial = new THREE.MeshStandardMaterial({
+  ...sphereTexture,
+  color: 0x7f7f7f,
+  wireframe: false,
+  transparent: false,
+  opacity: 1,
+  side: THREE.FrontSide
 })
 
 const sphere = configSphere({
   ...environment3D,
-  material: new THREE.MeshStandardMaterial({
-    color: 0xafafaf,
-    wireframe: false,
-    transparent: false,
-    opacity: 1,
-    side: THREE.FrontSide
-  })
+  material: sphereMaterial
 })
 
 environment3D.render((time) => {

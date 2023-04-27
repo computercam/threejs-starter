@@ -280,3 +280,15 @@ export function configGround ({ scene, size, material, gui }) {
 
   return plane
 }
+
+export const configTexture = (textureObj) => ({
+  getValue: () => textureObj,
+  map: (callback) => { 
+    Object
+      .values(textureObj)
+      .forEach(value => 
+        callback(value))
+        
+    return configTexture(textureObj)
+  }
+})
