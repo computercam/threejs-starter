@@ -28,7 +28,7 @@ configCamera({
     y: 3.14,
     z: 0
   },
-  guiOnChangeCallback({ camera }) {
+  guiOnChangeCallback ({ camera }) {
     camera.lookAt(sphere.position)
   }
 })
@@ -49,12 +49,12 @@ configLights({
 })
 
 const groundTexture = configTexture({
-	map: textureLoader.load('textures/checker/checker_diffuse.jpg'),
+  map: textureLoader.load('textures/checker/checker_diffuse.jpg')
 })
-  .map(texture => (texture.wrapS = THREE.RepeatWrapping))
-  .map(texture => (texture.wrapT = THREE.RepeatWrapping))
-  .map(texture => (texture.repeat.set(50, 50)))
-  .map(texture => (texture.magFilter = THREE.NearestFilter))
+  .map((texture) => (texture.wrapS = THREE.RepeatWrapping))
+  .map((texture) => (texture.wrapT = THREE.RepeatWrapping))
+  .map((texture) => texture.repeat.set(50, 50))
+  .map((texture) => (texture.magFilter = THREE.NearestFilter))
   .getValue()
 
 const groundMaterial = new THREE.MeshStandardMaterial({
@@ -69,7 +69,7 @@ const groundMaterial = new THREE.MeshStandardMaterial({
 configGround({
   ...environment3D,
   size: 1000,
-  material: groundMaterial 
+  material: groundMaterial
 })
 
 const sphereTexture = configTexture({
@@ -79,9 +79,9 @@ const sphereTexture = configTexture({
   normalMap: textureLoader.load('textures/pipes/pipes_normal.jpg'),
   aoMap: textureLoader.load('textures/pipes/pipes_ambientOcclusion.jpg')
 })
-  .map(texture => (texture.wrapS = THREE.RepeatWrapping))
-  .map(texture => (texture.wrapT = THREE.RepeatWrapping))
-  .map(texture => texture.repeat.set(8, 4))
+  .map((texture) => (texture.wrapS = THREE.RepeatWrapping))
+  .map((texture) => (texture.wrapT = THREE.RepeatWrapping))
+  .map((texture) => texture.repeat.set(8, 4))
   .getValue()
 
 const sphereMaterial = new THREE.MeshStandardMaterial({
