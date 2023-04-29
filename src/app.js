@@ -3,8 +3,8 @@ import * as THREE from 'three'
 import { getEnvironment3D } from './environment-3d'
 import {
   configCamera,
-  configFog,
-  configGround,
+  // configFog,
+  // configGround,
   configLights,
   configSkyBox,
   configSphere,
@@ -62,14 +62,14 @@ configLights({
   ]
 })
 
-const groundTexture = configTexture({
-  map: textureLoader.load('textures/checker/checker_diffuse.jpg')
-})
-  .map((texture) => (texture.wrapS = THREE.RepeatWrapping))
-  .map((texture) => (texture.wrapT = THREE.RepeatWrapping))
-  .map((texture) => texture.repeat.set(50, 50))
-  .map((texture) => (texture.magFilter = THREE.NearestFilter))
-  .getValue()
+// const groundTexture = configTexture({
+//   map: textureLoader.load('textures/checker/checker_diffuse.jpg')
+// })
+//   .map((texture) => (texture.wrapS = THREE.RepeatWrapping))
+//   .map((texture) => (texture.wrapT = THREE.RepeatWrapping))
+//   .map((texture) => texture.repeat.set(50, 50))
+//   .map((texture) => (texture.magFilter = THREE.NearestFilter))
+//   .getValue()
 
 // const groundMaterial = new THREE.MeshStandardMaterial({
 //   ...groundTexture,
