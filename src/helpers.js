@@ -1,13 +1,16 @@
 import * as THREE from 'three'
 
-export function getContainer () {
+const textureLoader = new THREE.TextureLoader()
+const cubeTextureLoader = new THREE.CubeTextureLoader()
+
+export function getContainer() {
   const el = document.querySelector('main')
   const height = () => el.getBoundingClientRect().height
   const width = () => el.getBoundingClientRect().width
   return { el, height, width }
 }
 
-export function configGUIMaterialControls ({ mesh, gui }) {
+export function configGUIMaterialControls({ mesh, gui }) {
   gui.addColor(mesh.material, 'color')
   gui.add(mesh.material, 'wireframe')
   gui.add(mesh.material, 'transparent')
@@ -19,7 +22,7 @@ export function configGUIMaterialControls ({ mesh, gui }) {
   })
 }
 
-export function createAmbientLight ({
+export function createAmbientLight({
   intensity = 0,
   color1 = 0xffffff,
   color2 = 0xffffff,
@@ -57,7 +60,7 @@ export function createAmbientLight ({
   return light
 }
 
-export function createPointLight ({
+export function createPointLight({
   x = 0,
   y = 0,
   z = 0,
@@ -104,7 +107,7 @@ export function createPointLight ({
   return light
 }
 
-export function configLights ({ scene, camera, lights, gui }) {
+export function configLights({ scene, camera, lights, gui }) {
   const guiFolder = gui ? gui.addFolder('Light Controls') : null
 
   createAmbientLight({
@@ -123,7 +126,7 @@ export function configLights ({ scene, camera, lights, gui }) {
   )
 }
 
-export function configFog ({ scene, renderer, color, density, gui }) {
+export function configFog({ scene, renderer, color, density, gui }) {
   renderer.setClearColor(color)
   scene.fog = new THREE.FogExp2(color, density)
 
@@ -148,7 +151,7 @@ export function configFog ({ scene, renderer, color, density, gui }) {
   return scene.fog
 }
 
-export function configCamera ({
+export function configCamera({
   camera,
   scene,
   position,
@@ -233,7 +236,7 @@ export function configCamera ({
   return camera
 }
 
-export function configSphere ({ scene, material, gui }) {
+export function configSphere({ scene, material, gui }) {
   const sphere = new THREE.Mesh(new THREE.SphereGeometry(6, 36, 36), material)
 
   sphere.castShadow = true
@@ -257,7 +260,7 @@ export function configSphere ({ scene, material, gui }) {
   return sphere
 }
 
-export function configGround ({ scene, size, material, gui }) {
+export function configGround({ scene, size, material, gui }) {
   const plane = new THREE.Mesh(new THREE.PlaneGeometry(size, size), material)
 
   plane.name = 'plane'
@@ -289,3 +292,39 @@ export const configTexture = (textureObj) => ({
     return configTexture(textureObj)
   }
 })
+
+
+export function configSkyBox({ cubeMapUrls, hdriUrl, scene }) {
+  const diffuseArray = cubeMapUrls.map((url) =>
+    new THREE.MeshBasicMaterial({
+      map: textureLoader.load(url),
+      side: THREE.BackSide
+    }))
+
+  const diffuse = textureLoader.load(hdriUrl)
+  const envMap = cubeTextureLoader.load(cubeMapUrls)
+  
+  // // Skybox with scene background
+  scene.background = envMap;
+
+  //// Skybox with sphere geometry
+  // const skyboxGeometry = new THREE.SphereGeometry(10000, 25, 25)
+  // const skyboxMaterial = new THREE.MeshBasicMaterial({
+  //   map: diffuse,
+  //   side: THREE.BackSide
+  //  })
+  // const skyboxMesh = new THREE.Mesh(skyboxGeometry, skyboxMaterial)
+  // scene.add(skyboxMesh)
+
+  
+  // // Skybox with box geometry
+  // const skyboxGeometry = new THREE.BoxGeometry(10000, 10000, 10000)
+  // const skyboxMesh = new THREE.Mesh(skyboxGeometry, diffuseArray)
+  // scene.add(skyboxMesh)
+  
+  return {
+    envMap,
+    diffuse,
+    diffuseArray
+  }
+}

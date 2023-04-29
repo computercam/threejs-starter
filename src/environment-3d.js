@@ -3,7 +3,7 @@ import * as THREE from 'three'
 
 export function getEnvironment3D ({ container: { el, width, height } }) {
   const scene = new THREE.Scene()
-  const cameraSettings = [55, width() / height(), 0.1, 1000]
+  const cameraSettings = [55, width() / height(), 0.0001, 10000]
   const camera = new THREE.PerspectiveCamera(...cameraSettings)
   const clock = new THREE.Clock()
   const gui = new GUI()

@@ -6,6 +6,7 @@ import {
   configFog,
   configGround,
   configLights,
+  configSkyBox,
   configSphere,
   configTexture,
   getContainer
@@ -33,18 +34,31 @@ configCamera({
   }
 })
 
-configFog({
+// configFog({
+//   ...environment3D,
+//   color: 0x000000,
+//   density: 0
+// })
+
+const skybox = configSkyBox({
   ...environment3D,
-  color: 0x000000,
-  density: 0.025
+  cubeMapUrls: [
+    'textures/warehouse/px.jpg',
+    'textures/warehouse/nx.jpg',
+    'textures/warehouse/py.jpg',
+    'textures/warehouse/ny.jpg',
+    'textures/warehouse/pz.jpg',
+    'textures/warehouse/nz.jpg'
+  ],
+  hdriUrl: 'textures/warehouse/warehouse_diffuse.jpg'
 })
 
 configLights({
   ...environment3D,
   lights: [
-    { x: 100, y: 100, z: 100, intensity: 2, color: 0xffffff },
-    { x: -100, y: 100, z: 100, intensity: 2, color: 0xffffff },
-    { x: 0, y: 100, z: -100, intensity: 2, color: 0xffffff }
+    { x: 100, y: 100, z: 100, intensity: 0.25, color: 0xffffff },
+    { x: -100, y: 100, z: 100, intensity: 2, color: 0x7f7f7f },
+    { x: 0, y: 100, z: -100, intensity: 1, color: 0xffffff }
   ]
 })
 
@@ -57,20 +71,20 @@ const groundTexture = configTexture({
   .map((texture) => (texture.magFilter = THREE.NearestFilter))
   .getValue()
 
-const groundMaterial = new THREE.MeshStandardMaterial({
-  ...groundTexture,
-  color: 'rgb(70, 70, 70)',
-  wireframe: false,
-  transparent: false,
-  opacity: 1,
-  side: THREE.DoubleSide
-})
+// const groundMaterial = new THREE.MeshStandardMaterial({
+//   ...groundTexture,
+//   color: 'rgb(70, 70, 70)',
+//   wireframe: false,
+//   transparent: false,
+//   opacity: 1,
+//   side: THREE.DoubleSide
+// })
 
-configGround({
-  ...environment3D,
-  size: 1000,
-  material: groundMaterial
-})
+// configGround({
+//   ...environment3D,
+//   size: 1000,
+//   material: groundMaterial
+// })
 
 const sphereTexture = configTexture({
   roughnessMap: textureLoader.load('textures/pipes/pipes_roughness.jpg'),
@@ -86,10 +100,12 @@ const sphereTexture = configTexture({
 
 const sphereMaterial = new THREE.MeshStandardMaterial({
   ...sphereTexture,
-  color: 0x7f7f7f,
+  envMap: skybox.envMap,
+  color: 0xffffff,
   wireframe: false,
   transparent: false,
   opacity: 1,
+  metalness: 0.5,
   side: THREE.FrontSide
 })
 
